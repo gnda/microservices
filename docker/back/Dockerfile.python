@@ -1,0 +1,7 @@
+FROM python:3.7-alpine
+
+RUN apk update &&\
+    mkdir -p /opt/app/ &&\
+    cd /opt/app/ &&\
+    python3 -m ensurepip &&\
+    python3 -m pip install --upgrade pip Flask

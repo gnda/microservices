@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+
+# Front microservice
+
+  web_back:
+    build:
+      context:  ./docker/front/
+      dockerfile: Dockerfile.node
+    entrypoint: "./node_modules/node-dev/bin/node-dev app/src/index.js"
+    volumes:
+      - ${PWD}/volumes/front:/usr/src/app
+    networks:
+      - web
+      - inventory
+
+  web_proxy:
+    build:
+      context:  ./docker/front/
+      dockerfile: Dockerfile.nginx
+    depends_on:
+      - web_back
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - web
+
+# Inventory microservice
+
+  inventory_back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    depends_on:
+      - inventory_db
+    entrypoint: python3 /opt/app/app.py
+    volumes:
+      - ${PWD}/volumes/back/inventory:/opt/app
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    networks:
+      - inventory
+
+  inventory_db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ${INVENTORY_DB_NAME}
+      MYSQL_USER: ${INVENTORY_DB_USER}
+      MYSQL_ROOT_PASSWORD: ${INVENTORY_DB_PASSWORD}
+      MYSQL_PASSWORD: ${INVENTORY_DB_PASSWORD}
+    volumes:
+      - ${PWD}/volumes/db/inventory_data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - inventory
+
+networks:
+  inventory:
+    name: inventory
+  web:
+    name: web
