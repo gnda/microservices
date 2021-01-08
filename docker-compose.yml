@@ -1,6 +1,15 @@
 version: "3.8"
 services:
 
+# Adminer to manage databases
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+    networks:
+      - db
+
 # Front microservice
 
   web_back:
@@ -55,9 +64,12 @@ services:
       - ${PWD}/volumes/db/inventory_data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
+      - db
       - inventory
 
 networks:
+  db:
+    name: db
   inventory:
     name: inventory
   web:
