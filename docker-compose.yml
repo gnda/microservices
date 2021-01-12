@@ -16,7 +16,7 @@ services:
     build:
       context:  ./docker/front/
       dockerfile: Dockerfile.node
-    entrypoint: "./node_modules/node-dev/bin/node-dev app/src/index.js"
+    entrypoint: "ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
     volumes:
       - ${PWD}/volumes/front:/usr/src/app
     networks:
