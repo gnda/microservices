@@ -1,7 +1,9 @@
 FROM python:3.7-alpine
 
+ADD requirements.txt  /opt/app/
+
 RUN apk update &&\
-    mkdir -p /opt/app/ &&\
+    apk add gcc musl-dev libffi-dev openssl-dev &&\
     cd /opt/app/ &&\
     python3 -m ensurepip &&\
-    python3 -m pip install --upgrade pip Flask
+    python3 -m pip install --upgrade pip -r requirements.txt
