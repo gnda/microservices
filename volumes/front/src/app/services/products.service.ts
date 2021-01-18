@@ -1,7 +1,7 @@
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Response } from '../models/response';
 import { Product } from '../models/product';
 
@@ -16,7 +16,10 @@ export class ProductsService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Response>{
-    return this.http.get<Response>(this.baseUrl);
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+      "Access-Control-Allow-Origin": "*"
+  });
+    return this.http.get<Response>(this.baseUrl, { headers: httpHeaders});
   }
 
   addProduct(product: Product): Observable<Response>{

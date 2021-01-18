@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
@@ -10,6 +11,8 @@ mysql_port = "3306"
 mysql_db = "inventory_db"
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + mysql_username + ':' + mysql_password + '@' + mysql_host + ':' + mysql_port + '/' + mysql_db
 db = SQLAlchemy(app)
 
@@ -53,7 +56,8 @@ class ProductSchema(ModelSchema):
     price = fields.Number(required=True)
 
 
-@app.route('/products', methods=['GET'])
+@app.route('/api/products', methods=['GET'])
+@cross_origin()
 def get_all_products():
     get_products = Product.query.all()
     product_schema = ProductSchema(many=True)

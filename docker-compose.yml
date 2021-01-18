@@ -52,6 +52,8 @@ services:
     working_dir: /opt/app
     networks:
       - inventory
+    ports:
+      - 8000:8000
 
   inventory_db:
     image: mysql:8
