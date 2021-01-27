@@ -14,7 +14,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # Application Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/jwtauth'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:admin@localhost/jwtauth'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
