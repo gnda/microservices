@@ -1,0 +1,57 @@
+<h3 class="code-line" data-line-start=0 data-line-end=1 ><a id="Les_commandes_suivantes_sont__effectuer_dans_le_rpertoire_clon_depuis_ce_dpt_0"></a>Les commandes suivantes sont à effectuer dans le répertoire cloné depuis ce dépôt</h3>
+<h2 class="code-line" data-line-start=2 data-line-end=3 ><a id="Installation_2"></a>Installation</h2>
+<p class="has-line-data" data-line-start="4" data-line-end="5">Pour déployer les conteneurs, il faut faire :</p>
+<pre><code class="has-line-data" data-line-start="7" data-line-end="9">docker-compose up -d --build
+</code></pre>
+<p class="has-line-data" data-line-start="10" data-line-end="11">Vérifiez l’état des conteneurs avec :</p>
+<pre><code class="has-line-data" data-line-start="12" data-line-end="14">docker ps
+</code></pre>
+<p class="has-line-data" data-line-start="15" data-line-end="16">S’il s’agit de la première fois que vous démarrez docker-compose dans le répertoire actif, il est normal que des conteneurs soient manquants car certains dépendent des bases de données MySQL.</p>
+<p class="has-line-data" data-line-start="17" data-line-end="19">Les conteneurs MySQL sont en cours d’initialisation et afin de  démarrer les services qui n’ont pas pu être lancés, il faut attendre qu’elle soit terminée.<br>
+<strong>Cela prend du temps si c’est la première fois si vous démarrez docker-compose dans le répertoire actif (pas de fichiers dans volumes/db)</strong></p>
+<p class="has-line-data" data-line-start="20" data-line-end="21">Vous pouvez vérifier cela en faisant (par exemple pour le service inventory) :</p>
+<pre><code class="has-line-data" data-line-start="22" data-line-end="24">docker logs microservices_inventory_db_1
+</code></pre>
+<p class="has-line-data" data-line-start="25" data-line-end="27">Il faut que la BDD soit prête à recevoir des connexions dans les logs.<br>
+Vous pouvez essayer de vous connecter sur le service adminer (voir plus bas), pour voir si vous accédez bien à la BDD.</p>
+<p class="has-line-data" data-line-start="28" data-line-end="29">Ensuite, faire encore une fois :</p>
+<pre><code class="has-line-data" data-line-start="31" data-line-end="33">docker-compose up -d --build
+</code></pre>
+<p class="has-line-data" data-line-start="34" data-line-end="35">Vérifiez que vous avez bien tous les conteneurs de lancé avec : <code>docker ps</code></p>
+<p class="has-line-data" data-line-start="36" data-line-end="37">Voici les différents endpoints de l’application (voir docker/front/default.conf) :</p>
+<pre><code class="has-line-data" data-line-start="39" data-line-end="43">localhost                 --&gt;  point d'entrée unique exposé au web (front angular)
+localhost/api/inventory   --&gt;  back du service inventory
+localhost/authentication  --&gt;  back du service authentication
+</code></pre>
+<h2 class="code-line" data-line-start=44 data-line-end=45 ><a id="Rinstallation_propre_44"></a>Réinstallation propre</h2>
+<p class="has-line-data" data-line-start="46" data-line-end="47">Supprimez les conteneurs créés précédement à coup de docker-compose :</p>
+<pre><code class="has-line-data" data-line-start="49" data-line-end="51">docker-compose down -v
+</code></pre>
+<p class="has-line-data" data-line-start="52" data-line-end="53">Détruire les conteneurs <strong>(attention cela effacera tous vos conteneurs docker !)</strong> :</p>
+<pre><code class="has-line-data" data-line-start="55" data-line-end="57">docker rm $(docker ps -qa)
+</code></pre>
+<p class="has-line-data" data-line-start="58" data-line-end="59">Détruire les images <strong>(attention cela effacera toutes vos images docker !)</strong> :</p>
+<pre><code class="has-line-data" data-line-start="61" data-line-end="63">docker rmi $(docker images -q)
+</code></pre>
+<p class="has-line-data" data-line-start="64" data-line-end="65">S’il reste des images dont il faut forcer la suppression :</p>
+<pre><code class="has-line-data" data-line-start="67" data-line-end="69">docker system prune -a
+</code></pre>
+<p class="has-line-data" data-line-start="70" data-line-end="71">Supprimer les data des BDD :</p>
+<pre><code class="has-line-data" data-line-start="73" data-line-end="75">sudo rm -rf volumes/db/
+</code></pre>
+<p class="has-line-data" data-line-start="76" data-line-end="77">Puis se référer à la section <a href="#installation">Installation</a></p>
+<h2 class="code-line" data-line-start=78 data-line-end=79 ><a id="Aide_78"></a>Aide</h2>
+<h4 class="code-line" data-line-start=80 data-line-end=81 ><a id="Gnral_80"></a>Général</h4>
+<p class="has-line-data" data-line-start="82" data-line-end="83">Pour redémarrer un service, par exemple pour le service inventory, faire :</p>
+<pre><code class="has-line-data" data-line-start="85" data-line-end="87">docker-compose restart inventory
+</code></pre>
+<h3 class="code-line" data-line-start=88 data-line-end=89 ><a id="Backend_88"></a>Backend</h3>
+<p class="has-line-data" data-line-start="90" data-line-end="91">Les dépendances python se situent dans <code>docker/back/requirements.txt</code></p>
+<h4 class="code-line" data-line-start=92 data-line-end=93 ><a id="Service_Inventory_92"></a>Service Inventory</h4>
+<p class="has-line-data" data-line-start="94" data-line-end="95">Pour travailler avec l’API CRUD voici quelques commandes curl que vous pouvez lancer dans votre terminal (si vos conteneurs sont en marche) :</p>
+<pre><code class="has-line-data" data-line-start="97" data-line-end="101">curl -H &quot;Content-Type: application/json&quot; -X POST -d '{&quot;name&quot;:&quot;Lenovo Legion Y520&quot;, &quot;description&quot;:&quot;PC Portable i5-7500H GTX 1060&quot;, &quot;price&quot;:&quot;450&quot;}' http://localhost/api/inventory/products
+curl -H &quot;Content-Type: application/json&quot; -X PUT -d '{&quot;name&quot;:&quot;Lenovo Legion Y520&quot;, &quot;description&quot;:&quot;PC Portable i5-7500H GTX 1060&quot;, &quot;price&quot;:&quot;460&quot;}' http://localhost/api/inventory/products/1
+curl -X DELETE http://localhost/api/inventory/products/1
+</code></pre>
+<h4 class="code-line" data-line-start=102 data-line-end=103 ><a id="Service_Adminer_102"></a>Service Adminer</h4>
+<p class="has-line-data" data-line-start="104" data-line-end="105">Pensez à aller sur <code>localhost:8080</code> pour accéder aux BDD via adminer, les identifiants sont dans le fichier .env qui est à la racine de ce dépôt.</p>

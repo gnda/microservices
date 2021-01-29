@@ -20,14 +20,26 @@ export class ShowProductComponent implements OnInit {
   productToBeDelete: Product;
   file: File;
   progress = 0;
-  baseUrlImage = `${environment.api_image}`;
 
-  constructor(private productService: ProductsService,private fileService: FileUploadService) { }
+  constructor(private productService: ProductsService, private fileService: FileUploadService) { }
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe(
       (data: Response)=>{
         this.products = data["products"];
+        this.productService.getProductImages().subscribe(
+        (data: Response) => {
+          var images = data["images"];
+          this.products.forEach(product => {
+            let id = product.idproduct;
+            images.forEach(image => {
+              if (image.idproduct == id) {
+                product.imageUrl = image.url;
+                return;
+              }
+            });
+          });
+        });
       }
     );
   }

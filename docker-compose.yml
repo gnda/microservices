@@ -18,7 +18,8 @@ services:
       dockerfile: Dockerfile.node
     entrypoint: "ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
     volumes:
-      - ${PWD}/volumes/front:/usr/src/app
+      - ./volumes/front:/usr/src/app
+    working_dir: /usr/src/app
     networks:
       - web
       - inventory
@@ -36,6 +37,38 @@ services:
       - 443:443
     networks:
       - web
+      - inventory
+      - authentication
+
+# Authentication microservice
+
+  authentication_back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    depends_on:
+      - authentication_db
+    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    volumes:
+      - ${PWD}/volumes/back/authentication:/opt/app
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    networks:
+      - authentication
+
+  authentication_db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ${AUTHENTICATION_DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ${PWD}/volumes/db/authentication_data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - db
+      - authentication
 
 # Inventory microservice
 
@@ -45,23 +78,21 @@ services:
       dockerfile: Dockerfile.python
     depends_on:
       - inventory_db
-    entrypoint: python3 /opt/app/app.py
+    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
     volumes:
       - ${PWD}/volumes/back/inventory:/opt/app
       - /etc/localtime:/etc/localtime:ro
     working_dir: /opt/app
     networks:
       - inventory
-    ports:
-      - 8000:8000
 
   inventory_db:
     image: mysql:8
     environment:
       MYSQL_DATABASE: ${INVENTORY_DB_NAME}
-      MYSQL_USER: ${INVENTORY_DB_USER}
-      MYSQL_ROOT_PASSWORD: ${INVENTORY_DB_PASSWORD}
-      MYSQL_PASSWORD: ${INVENTORY_DB_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ${PWD}/volumes/db/inventory_data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
@@ -72,6 +103,8 @@ services:
 networks:
   db:
     name: db
+  authentication:
+    name: authentication
   inventory:
     name: inventory
   web:

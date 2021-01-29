@@ -1,7 +1,10 @@
 Flask
 flask-cors
+flask-jwt-extended
+flask-marshmallow
+flask-restful
 Flask-SQLAlchemy
-marshmallow
 marshmallow-sqlalchemy
 cryptography
+passlib
 PyMySQL
