@@ -1,3 +1,6 @@
 .DS_Store
 __pycache__
 volumes/db/
+volumes/front/node_modules
+volumes/front/package-lock.json
+volumes/front/package.json

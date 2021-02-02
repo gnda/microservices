@@ -16,7 +16,12 @@ services:
     build:
       context:  ./docker/front/
       dockerfile: Dockerfile.node
-    entrypoint: "ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
+    entrypoint:
+      sh -c "ln -sf /install/node_modules node_modules &&
+      ln -sf /install/package.json package.json &&
+      ln -sf /install/package-lock.json package-lock.json &&
+      ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
+    tty: true
     volumes:
       - ./volumes/front:/usr/src/app
     working_dir: /usr/src/app
