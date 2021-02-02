@@ -30,8 +30,8 @@ export class ProductsService {
     params.append('description',product.description);
     params.append('price',`${product.price}`);
     params.append('stock',`${product.stock}`);
-    params.append('category',`${product.Category}`);
-    params.append('image',product.image);
+    params.append('category',`${product.category}`);
+    params.append('images',product.images.toString());
 
     return this.http.post<Response>(this.baseUrl, params);
   }
@@ -42,7 +42,7 @@ export class ProductsService {
   }
 
   deleteProduct(product: Product): Observable<Response>{
-    const url = this.baseUrl+"&id="+product.idProduct;
+    const url = this.baseUrl+"&id="+product.id;
     return this.http.delete<Response>(url);
   }
 

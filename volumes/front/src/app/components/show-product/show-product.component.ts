@@ -27,19 +27,6 @@ export class ShowProductComponent implements OnInit {
     this.productService.getProducts().subscribe(
       (data: Response)=>{
         this.products = data["products"];
-        this.productService.getProductImages().subscribe(
-        (data: Response) => {
-          var images = data["images"];
-          this.products.forEach(product => {
-            let id = product.idproduct;
-            images.forEach(image => {
-              if (image.idproduct == id) {
-                product.imageUrl = image.url;
-                return;
-              }
-            });
-          });
-        });
       }
     );
   }
@@ -47,7 +34,6 @@ export class ShowProductComponent implements OnInit {
   onEdit(product: Product):void {
     this.productModalOpen = true;
     this.selectedProduct = product;
-
   }
 
   onDelete(product: Product): void{
@@ -69,16 +55,15 @@ export class ShowProductComponent implements OnInit {
       (data: Response)=>{
         if(data.status == 200){
           // Delete Product Image
-          this.fileService.deleteImage(this.productToBeDelete.image).subscribe(
+          this.fileService.deleteImage(this.productToBeDelete.images[0]).subscribe(
             (data: Response)=>{
               console.log(data);
-
             }
           )
           console.log(data);
 
           // Update Frontend
-          const index = this.products.findIndex(p => p.idProduct == this.productToBeDelete.idProduct);
+          const index = this.products.findIndex(p => p.id == this.productToBeDelete.id);
           this.products.splice(index,1);
 
         }else{
@@ -96,7 +81,7 @@ export class ShowProductComponent implements OnInit {
       console.log(product);
       if(this.selectedProduct){
         //Edit Product
-        product.idProduct = this.selectedProduct.idProduct;
+        product.idProduct = this.selectedProduct.id;
         this.editProductToServer(product);
       }else{
         //Add Product
@@ -141,8 +126,8 @@ export class ShowProductComponent implements OnInit {
               (event: HttpEvent<any>)=>{
                 this.uploadImage(event).then(
                   ()=>{
-                    product.idProduct = data.args.lastInsertId;
-                    product.Category = product.category;
+                    product.id = data.args.lastInsertId;
+                    product.category = product.category;
                     this.products.push(product);
                   }
                 );
@@ -171,7 +156,7 @@ export class ShowProductComponent implements OnInit {
                 );
               }
             );
-            this.fileService.deleteImage(product.oldImage).subscribe(
+            this.fileService.deleteImage(product.images[0]).subscribe(
               (data: Response)=>{
                 console.log(data);
               }
@@ -192,7 +177,7 @@ export class ShowProductComponent implements OnInit {
 
   updateProducts(product){
      // update frontend
-     const index = this.products.findIndex(p =>p.idProduct == product.idProduct);
+     const index = this.products.findIndex(p =>p.id == product.id);
      product.Category = product.category;
      this.products = [
        ...this.products.slice(0,index),

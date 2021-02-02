@@ -1,6 +1,12 @@
+import { Category } from './category';
+import { Image } from "./image";
+
 export interface Product {
-  idproduct: number,
+  id: number,
   name: string,
+  category: Category,
   description: string,
-  price: number
+  price: number,
+  stock: number,
+  images: Image[],
 }

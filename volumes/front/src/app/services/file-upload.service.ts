@@ -2,14 +2,13 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Image } from '../models/image';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
-
   private baseUrl = `${environment.api+'image'+'?API_KEY='+environment.api_key}`;
-
 
   constructor(private http: HttpClient) { }
 
@@ -23,10 +22,8 @@ export class FileUploadService {
     })
   }
 
-  deleteImage(name: string): Observable<any>{
-    const url = this.baseUrl+"&name="+name;
+  deleteImage(image: Image): Observable<any>{
+    const url = this.baseUrl+"&id="+image.id;
     return this.http.delete(url);
   }
-
-
 }

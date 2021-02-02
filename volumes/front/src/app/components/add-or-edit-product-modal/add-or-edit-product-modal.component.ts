@@ -35,8 +35,8 @@ export class AddOrEditProductModalComponent implements OnInit, OnChanges, OnDest
     })
    }
 
-   selectCategory(id: number){
-    this.idCategory = id;
+  selectCategory(category: Category){
+    this.idCategory = category.id;
   }
 
 
@@ -65,13 +65,13 @@ export class AddOrEditProductModalComponent implements OnInit, OnChanges, OnDest
     }
 
     if(this.product){
-      product.oldImage = this.product.oldImage;
+      product.oldImage = this.product.images[0];
     }
 
     if(this.file){
       product.image = this.file.name;
     }else{
-      product.image = this.product.oldImage;
+      product.image = this.product.images[0];
     }
 
     this.finish.emit({product: product, file: this.file ? this.file : null});
@@ -96,9 +96,8 @@ export class AddOrEditProductModalComponent implements OnInit, OnChanges, OnDest
         stock: product.stock,
       }
     });
-    product.oldImage = product.image;
-    this.selectCategory(product.Category);
-
+    product.images[0] = this.product.images[0];
+    this.selectCategory(product.category);
   }
 
 
