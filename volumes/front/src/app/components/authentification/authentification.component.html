@@ -1,0 +1,15 @@
+<clr-modal [clrModalOpen]="true">
+  <h3 class="modal-title">Authentification</h3>
+  <mat-card-content>
+    
+    <mat-form-field class="app-item">
+      <input type="text" matInput placeholder="Username" id="login" name="login" [(ngModel)]="credentials.login" required>
+    </mat-form-field>
+
+    <mat-form-field class="app-item">
+      <input type="password" matInput placeholder="Password" id="password" name="password" [(ngModel)]="credentials.password" required>
+    </mat-form-field>
+    <p></p>
+    <button mat-raised-button type="submit" class="app-item" style="color: white; background-color: #2196f3">Log in</button>
+  </mat-card-content>
+</clr-modal>

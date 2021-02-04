@@ -10,18 +10,13 @@ import { Product } from '../models/product';
 })
 export class ProductsService {
 
-  private baseUrl = `${environment.api + 'inventory/products'}`;
-  private baseUrlUpdate = `${environment.api+'updateProducts.php'}`;
-  private apiKey = '?API_KEY='+environment.api_key;
+  private baseUrl = `${environment.api+'products'+'?API_KEY='+environment.api_key}`;
+  private baseUrlUpdate = `${environment.api+'updateProducts.php'+'?API_KEY='+environment.api_key}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Response>{
     return this.http.get<Response>(this.baseUrl);
-  }
-
-  getProductImages(): Observable<Response>{
-    return this.http.get<Response>(this.baseUrl + "/images");
   }
 
   addProduct(product: Product): Observable<Response>{
@@ -29,9 +24,6 @@ export class ProductsService {
     params.append('name', product.name);
     params.append('description',product.description);
     params.append('price',`${product.price}`);
-    params.append('stock',`${product.stock}`);
-    params.append('category',`${product.category}`);
-    params.append('images',product.images.toString());
 
     return this.http.post<Response>(this.baseUrl, params);
   }
@@ -42,9 +34,12 @@ export class ProductsService {
   }
 
   deleteProduct(product: Product): Observable<Response>{
-    const url = this.baseUrl+"&id="+product.id;
+    const url = this.baseUrl+"&id="+product.idproduct;
     return this.http.delete<Response>(url);
   }
+
+
+
 
   constructURLParams = (object) => {
     let result = '';
