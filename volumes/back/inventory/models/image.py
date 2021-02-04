@@ -5,7 +5,7 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.Text)
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
-    product = db.relationship("Product", backref="images")
+    product = db.relationship("Product", back_populates="images")
 
     def create(self):
         db.session.add(self)

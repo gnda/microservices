@@ -1,6 +1,9 @@
 from models.product import Product
 from app import ma
 
+from schemas.image_schema import ImageSchema
+
+
 class ProductSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Product
@@ -10,4 +13,6 @@ class ProductSchema(ma.SQLAlchemyAutoSchema):
     name = ma.auto_field(required=True)
     description = ma.auto_field(required=True)
     price = ma.auto_field(required=True)
-    images = ma.auto_field(required=False)
+    stock = ma.auto_field(required=True)
+    images = ma.Nested(ImageSchema, many=True)
+
