@@ -3,7 +3,7 @@ FROM python:3.7-alpine
 ADD requirements.txt  /opt/app/
 
 RUN apk update &&\
-    apk add gcc musl-dev libffi-dev openssl-dev &&\
+    apk add gcc musl-dev libffi-dev openssl-dev rust cargo &&\
     cd /opt/app/ &&\
     python3 -m ensurepip &&\
     python3 -m pip install --upgrade pip -r requirements.txt
