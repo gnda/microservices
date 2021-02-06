@@ -60,18 +60,18 @@ export class AddOrEditProductModalComponent implements OnInit, OnChanges, OnDest
     let product = {
       ...this.productForm.get('productInfos').value,
       ...this.productForm.get('illustration').value,
-      category: this.idCategory,
-      oldImage: null
+      category: {id: this.idCategory}
     }
 
     if(this.product){
-      product.oldImage = this.product.images[0];
+      product.images[0] = this.product.images[0];
     }
 
     if(this.file){
+      product.images[0] = this.product.images[0];
       product.image = this.file.name;
-    }else{
-      product.image = this.product.images[0];
+    } else {
+      product.images[0] = this.product.images[0];
     }
 
     this.finish.emit({product: product, file: this.file ? this.file : null});

@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + mysql_username + ':
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-from models import product, image
+from models import order
 db.create_all()
 
-from routes import product
+from routes import order

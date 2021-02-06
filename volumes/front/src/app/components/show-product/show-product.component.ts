@@ -25,6 +25,11 @@ export class ShowProductComponent implements OnInit {
   constructor(private productService: ProductsService,private fileService: FileUploadService) { }
 
   ngOnInit(): void {
+    this.productService.getProducts().subscribe(
+      (data: Response)=>{
+        this.products = data["products"];
+      }
+    );
   }
 
   onEdit(product: Product):void {

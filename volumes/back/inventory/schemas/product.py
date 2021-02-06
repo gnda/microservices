@@ -1,7 +1,7 @@
 from models.product import Product
 from app import ma
 
-from schemas.image_schema import ImageSchema
+from schemas.image import ImageSchema
 
 
 class ProductSchema(ma.SQLAlchemyAutoSchema):

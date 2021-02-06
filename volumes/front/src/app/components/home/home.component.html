@@ -1,13 +1,21 @@
 <clr-main-container>
   <clr-header>
-
-    <div class="header-nav" [clr-nav-level]="1">
-      <div class="branding">
+    <div class="branding">
+      <a href="javascript://" class="nav-link">
+        <cds-icon shape="vm-bug"></cds-icon>
         <span class="title">STORE</span>
+      </a>
+    </div>
+    <div class="header-nav">
+      <a href="javascript://" class="active nav-link nav-text">Dashboard</a>
+    </div>
+    <div class="header-actions">
+      <div class="header-nav">
+        <a href="javascript://authentification.component.ts" class="btn">Login</a>
       </div>
     </div>
+  </clr-header>   
 
-  </clr-header>
   <div class="content-container">
     <main class="content-area">
       <app-show-product [products]="products"></app-show-product>
@@ -20,13 +28,9 @@
         <a href="javascript://" class="nav-link">
           Orders
         </a>
-        <button routerLink="" class="btn">
-          Login
-        </button>
         <a href="javascript://" class="nav-link">
           Product Category
         </a>
-
       </section>
     </nav>
   </div>
