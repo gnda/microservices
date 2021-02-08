@@ -27,8 +27,6 @@ services:
     working_dir: /usr/src/app
     networks:
       - web
-    ports:
-      - 5000:5000
 
   web_proxy:
     build:
