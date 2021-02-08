@@ -10,6 +10,9 @@ import { AddOrEditProductModalComponent } from './components/add-or-edit-product
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShowProductComponent } from './components/show-product/show-product.component';
+import { ShowOrderComponent } from './components/show-order/show-order.component';
+import { AppRouteModule } from './app-route.module';
+import { HeaderNavbarComponent } from './components/header-navbar/header-navbar.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,9 @@ import { ShowProductComponent } from './components/show-product/show-product.com
     HomeComponent,
     DeleteProductModalComponent,
     AddOrEditProductModalComponent,
-    ShowProductComponent
+    ShowProductComponent,
+    ShowOrderComponent,
+    HeaderNavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +30,7 @@ import { ShowProductComponent } from './components/show-product/show-product.com
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AppRouteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

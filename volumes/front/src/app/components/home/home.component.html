@@ -1,13 +1,6 @@
 <clr-main-container>
-  <clr-header>
+  <app-header-navbar></app-header-navbar> 
 
-    <div class="header-nav" [clr-nav-level]="1">
-      <div class="branding">
-        <span class="title">JSTORE</span>
-      </div>
-    </div>
-
-  </clr-header>
   <div class="content-container">
     <main class="content-area">
       <app-show-product [products]="products"></app-show-product>
@@ -21,12 +14,8 @@
           Orders
         </a>
         <a href="javascript://" class="nav-link">
-          Customers
-        </a>
-        <a href="javascript://" class="nav-link">
           Product Category
         </a>
-
       </section>
     </nav>
   </div>

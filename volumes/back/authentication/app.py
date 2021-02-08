@@ -1,15 +1,15 @@
-import jwt
+import os, jwt
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 
-mysql_username = "user"
-mysql_password = "test1234"
-mysql_host = "authentication_db"
-mysql_port = "3306"
-mysql_db = "authentication_db"
+mysql_username = os.environ['MYSQL_USER']
+mysql_password = os.environ['MYSQL_PASSWORD']
+mysql_host = os.environ['MYSQL_HOST']
+mysql_port = os.environ['MYSQL_PORT']
+mysql_db = os.environ['MYSQL_DATABASE']
 
 app = Flask(__name__)
 CORS(app)

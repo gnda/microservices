@@ -1,8 +1,8 @@
 from app import app, db
 from flask import request, jsonify, make_response
 from models.product import Product
-from schemas.image_schema import ImageSchema
-from schemas.product_schema import ProductSchema
+from schemas.image import ImageSchema
+from schemas.product import ProductSchema
 
 @app.route('/api/products', methods=['GET'])
 def get_all_products():

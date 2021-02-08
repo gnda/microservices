@@ -21,13 +21,11 @@ services:
       ln -sf /install/package.json package.json &&
       ln -sf /install/package-lock.json package-lock.json &&
       ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
-    tty: true
     volumes:
       - ./volumes/front:/usr/src/app
     working_dir: /usr/src/app
     networks:
       - web
-      - inventory
 
   web_proxy:
     build:
@@ -42,8 +40,9 @@ services:
       - 443:443
     networks:
       - web
-      - inventory
       - authentication
+      - inventory
+      - order
 
 # Authentication microservice
 
@@ -54,6 +53,9 @@ services:
     depends_on:
       - authentication_db
     entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    env_file:
+      - '.env/db.env'
+      - '.env/authentication.env'
     volumes:
       - ${PWD}/volumes/back/authentication:/opt/app
       - /etc/localtime:/etc/localtime:ro
@@ -63,11 +65,9 @@ services:
 
   authentication_db:
     image: mysql:8
-    environment:
-      MYSQL_DATABASE: ${AUTHENTICATION_DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - '.env/db.env'
+      - '.env/authentication.env'
     volumes:
       - ${PWD}/volumes/db/authentication_data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
@@ -84,6 +84,9 @@ services:
     depends_on:
       - inventory_db
     entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    env_file:
+      - '.env/db.env'
+      - '.env/inventory.env'
     volumes:
       - ${PWD}/volumes/back/inventory:/opt/app
       - /etc/localtime:/etc/localtime:ro
@@ -93,17 +96,47 @@ services:
 
   inventory_db:
     image: mysql:8
-    environment:
-      MYSQL_DATABASE: ${INVENTORY_DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - '.env/db.env'
+      - '.env/inventory.env'
     volumes:
       - ${PWD}/volumes/db/inventory_data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
       - db
       - inventory
+
+# Order microservice
+
+  order_back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    depends_on:
+      - order_db
+    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    env_file:
+      - '.env/db.env'
+      - '.env/order.env'
+    volumes:
+      - ${PWD}/volumes/back/order:/opt/app
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    networks:
+      - order
+      - inventory
+
+  order_db:
+    image: mysql:8
+    env_file:
+      - '.env/db.env'
+      - '.env/order.env'
+    volumes:
+      - ${PWD}/volumes/db/order_data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - db
+      - order
 
 networks:
   db:
@@ -112,5 +145,7 @@ networks:
     name: authentication
   inventory:
     name: inventory
+  order:
+    name: order
   web:
     name: web
