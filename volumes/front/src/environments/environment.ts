@@ -4,11 +4,6 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost/api/',
-  api_key: 'adsffsdfds6b-6727-46f4-8bee-2c6ce6293e41',
-  api_image: 'http://localhost/ecommerce/backend/images/products/',
-
-  loginUrl: ''
 };
 
 /*
