@@ -66,7 +66,7 @@ export class ShowProductComponent implements OnInit {
           console.log(data);
 
           // Update Frontend
-          const index = this.products.findIndex(p => p.idproduct == this.productToBeDelete.idproduct);
+          const index = this.products.findIndex(p => p.id == this.productToBeDelete.id);
           this.products.splice(index,1);
 
         }else{
@@ -84,7 +84,7 @@ export class ShowProductComponent implements OnInit {
       console.log(product);
       if(this.selectedProduct){
         //Edit Product
-        product.idproduct = this.selectedProduct.idproduct;
+        product.id = this.selectedProduct.id;
         this.editProductToServer(product);
       }else{
         //Add Product
@@ -129,7 +129,7 @@ export class ShowProductComponent implements OnInit {
               (event: HttpEvent<any>)=>{
                 this.uploadImage(event).then(
                   ()=>{
-                    product.idproduct = data.args.lastInsertId;
+                    product.id = data.args.lastInsertId;
                     product.Category = product.category;
                     this.products.push(product);
                   }
@@ -180,7 +180,7 @@ export class ShowProductComponent implements OnInit {
 
   updateProducts(product){
      // update frontend
-     const index = this.products.findIndex(p =>p.idproduct == product.idproduct);
+     const index = this.products.findIndex(p =>p.id == product.id);
      product.Category = product.category;
      this.products = [
        ...this.products.slice(0,index),
