@@ -14,5 +14,5 @@ class ProductSchema(ma.SQLAlchemyAutoSchema):
     description = ma.auto_field(required=True)
     price = ma.auto_field(required=True)
     stock = ma.auto_field(required=True)
-    images = ma.Nested(ImageSchema, many=True)
+    images = ma.Nested(ImageSchema, many=True, required=False)
 

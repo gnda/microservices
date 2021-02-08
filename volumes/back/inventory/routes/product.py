@@ -24,8 +24,9 @@ def create_product():
     data = request.get_json()
     product_schema = ProductSchema()
     product = product_schema.load(data)
-    result = product_schema.dump(product.create())
-    return make_response(jsonify({"product": result}), 200)
+    db.session.add(product)
+    db.session.commit()
+    return make_response(jsonify({"success": True}), 200)
 
 @app.route('/api/products/<product_id>', methods=['PUT'])
 def update_product(product_id):
@@ -37,6 +38,8 @@ def update_product(product_id):
         get_product.description = data['description']
     if data.get('price'):
         get_product.price = data['price']
+    if data.get('stock'):
+        get_product.price = data['stock']
     db.session.add(get_product)
     db.session.commit()
     product_schema = ProductSchema()
