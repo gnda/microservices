@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "adminEcommerceAngular": {
+    "notus-angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,27 +13,23 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/adminEcommerceAngular",
+            "allowedCommonJsDependencies": [ "chart.js" ],
+            "outputPath": "dist/notus-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "preserveSymlinks": true,
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "node_modules/@clr/icons/clr-icons.min.css",
-              "node_modules/@clr/ui/clr-ui.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/assets/styles/tailwind.css",
             ],
-            "scripts": [
-              "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
-              "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
-              "node_modules/@clr/icons/clr-icons.min.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -46,7 +42,9 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -68,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "adminEcommerceAngular:build"
+            "browserTarget": "notus-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "adminEcommerceAngular:build:production"
+              "browserTarget": "notus-angular:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "adminEcommerceAngular:build"
+            "browserTarget": "notus-angular:build"
           }
         },
         "test": {
@@ -116,19 +114,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "adminEcommerceAngular:serve"
+            "devServerTarget": "notus-angular:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "adminEcommerceAngular:serve:production"
+              "devServerTarget": "notus-angular:serve:production"
             }
           }
         }
       }
-    }
-  },
-  "defaultProject": "adminEcommerceAngular",
-  "cli": {
-    "analytics": "c73a0a00-c656-43bc-be05-2a595eb9961c"
-  }
+    }},
+  "defaultProject": "notus-angular"
 }
