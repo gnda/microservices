@@ -4,6 +4,7 @@ ENV NODE_PATH=/install/node_modules
 ENV PATH=${NODE_PATH}/.bin:${PATH}
 COPY package*.json /install/
 RUN cd /install &&\
-    npm install
+    npm install &&\
+    npm install popper.js --save
 
 EXPOSE 5000
