@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShowProductComponent } from './components/show-product/show-product.component';
 import { ShowOrderComponent } from './components/show-order/show-order.component';
 import { AppRouteModule } from './app-route.module';
+import { HeaderNavbarComponent } from './components/header-navbar/header-navbar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AppRouteModule } from './app-route.module';
     DeleteProductModalComponent,
     AddOrEditProductModalComponent,
     ShowProductComponent,
-    ShowOrderComponent
+    ShowOrderComponent,
+    HeaderNavbarComponent
   ],
   imports: [
     BrowserModule,
