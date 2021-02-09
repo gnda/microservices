@@ -39,7 +39,7 @@ def update_product(product_id):
     if data.get('price'):
         get_product.price = data['price']
     if data.get('stock'):
-        get_product.price = data['stock']
+        get_product.stock = data['stock']
     db.session.add(get_product)
     db.session.commit()
     product_schema = ProductSchema()

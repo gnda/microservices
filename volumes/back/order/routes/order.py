@@ -28,13 +28,20 @@ def create_order():
     data = request.get_json()
     if 'products' in data:
         products = data['products']
-        del data['products']
-        r = requests.get('http://inventory_back:8000/products/' + str(products[0]))
-    return make_response(r.json(), 200)
-    # order_schema = OrderSchema()
-    # order = order_schema.load(data)
-    # result = order_schema.dump(order.create())
-    # return make_response(jsonify({"order": result}), 200
+        if not products:
+            return make_response("empty order", 400)
+        for product in products:
+            r = requests.get('http://inventory_back:8000/api/products/' + str(product['id']))
+            if not r.json()['product']:
+                return make_response("non existent product", 404)
+            if r.json()['product']['stock'] < int(product['quantity']):
+                return make_response("not enough stock for product"+str(product['id']), 400)
+            new_stock = int(r.json()['product']['stock']) - int(product['quantity'])
+            requests.put('http://inventory_back:8000/api/products/' + str(product['id']), json={'stock': str(new_stock)})
+    order_schema = OrderSchema()
+    order = order_schema.load(data)
+    result = order_schema.dump(order.create())
+    return make_response(jsonify({"order": result}), 200)
 
 
 @app.route('/api/orders/<order_id>', methods=['PUT'])
