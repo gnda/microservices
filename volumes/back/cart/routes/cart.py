@@ -15,17 +15,17 @@ def get_all_carts():
     return make_response(jsonify({"carts": carts}))
 
 
-@app.route('/api/cart_by_id/<cart_id>', methods=['GET'])
+@app.route('/api/carts/id/<cart_id>', methods=['GET'])
 def get_cart_by_id(cart_id):
     get_cart = Cart.query.get(cart_id)
     cart_schema = CartSchema()
     cart = cart_schema.dump(get_cart)
     return make_response(jsonify({"cart": cart}))
 
-@app.route('/api/cart_by_user/<user_id>', methods=['GET'])
+@app.route('/api/carts/user/<user_id>', methods=['GET'])
 def get_cart_by_user(user_id):
     get_cart = Cart.query.filter(Cart.idUser == user_id)
-    cart_schema = CartSchema()
+    cart_schema = CartSchema(many=True)
     cart = cart_schema.dump(get_cart)
     return make_response(jsonify({"cart": cart}))
 

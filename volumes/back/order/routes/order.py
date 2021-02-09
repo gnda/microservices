@@ -15,12 +15,19 @@ def get_all_orders():
     return make_response(jsonify({"orders": orders}))
 
 
-@app.route('/api/orders/<order_id>', methods=['GET'])
+@app.route('/api/orders/id/<order_id>', methods=['GET'])
 def get_one_order(order_id):
     get_order = Order.query.get(order_id)
     order_schema = OrderSchema()
     order = order_schema.dump(get_order)
     return make_response(jsonify({"order": order}))
+
+@app.route('/api/orders/user/<user_id>', methods=['GET'])
+def get_orders_by_user(user_id):
+    get_orders = Order.query.filter(Order.idUser == user_id)
+    order_schema = OrderSchema(many=True)
+    orders = order_schema.dump(get_orders)
+    return make_response(jsonify({"orders": orders}))
 
 
 @app.route('/api/orders', methods=['POST'])
