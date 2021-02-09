@@ -1,12 +1,11 @@
-from models.order import Order
+from models.cart import Cart
 from app import ma
 
-class OrderSchema(ma.SQLAlchemyAutoSchema):
+class CartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Order
+        model = Cart
         load_instance = True
 
     id = ma.auto_field(dump_only=True)
     idUser = ma.auto_field(required=True)
-    amount = ma.auto_field(required=True)
     products = ma.auto_field(required=True)

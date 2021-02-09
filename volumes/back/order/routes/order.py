@@ -50,6 +50,8 @@ def update_order(order_id):
     get_order = Order.query.get(order_id)
     if data.get('amount'):
         get_order.amount = data['amount']
+    if data.get('products'):
+        get_order.amount = data['products']
     get_order.createdAt = date()
     db.session.add(get_order)
     db.session.commit()
