@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -48,6 +49,7 @@ import { PagesDropdownComponent } from "./components/dropdowns/pages-dropdown/pa
 import { NotificationDropdownComponent } from "./components/dropdowns/notification-dropdown/notification-dropdown.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user-dropdown.component";
+import { ProductDropdownComponent } from './components/dropdowns/product-dropdown/product-dropdown/product-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -86,8 +88,9 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     IndexComponent,
     LandingComponent,
     ProfileComponent,
+    ProductDropdownComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })
