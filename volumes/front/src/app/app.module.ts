@@ -50,6 +50,9 @@ import { NotificationDropdownComponent } from "./components/dropdowns/notificati
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user-dropdown.component";
 import { ProductDropdownComponent } from './components/dropdowns/product-dropdown/product-dropdown/product-dropdown.component';
+import { CardUsersComponent } from './components/cards/card-users/card-users.component';
+import { CardOrdersComponent } from './components/cards/card-orders/card-orders.component';
+import { CardCartsComponent } from './components/cards/card-carts/card-carts.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +92,9 @@ import { ProductDropdownComponent } from './components/dropdowns/product-dropdow
     LandingComponent,
     ProfileComponent,
     ProductDropdownComponent,
+    CardUsersComponent,
+    CardOrdersComponent,
+    CardCartsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],

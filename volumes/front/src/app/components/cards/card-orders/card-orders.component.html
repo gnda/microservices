@@ -1,0 +1,121 @@
+<div
+  class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
+  [ngClass]="color === 'light' ? 'bg-white' : 'bg-red-900 text-white'"
+>
+  <div class="rounded-t mb-0 px-4 py-3 border-0">
+    <div class="flex flex-wrap items-center">
+      <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+        <h3
+          class="font-semibold text-lg"
+          [ngClass]="color === 'light' ? 'text-gray-800' : 'text-white'"
+        >
+          Orders
+        </h3>
+      </div>
+    </div>
+  </div>
+  <div class="block w-full overflow-x-auto">
+    <!-- Projects table -->
+    <table class="items-center w-full bg-transparent border-collapse">
+      <thead>
+        <tr>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          >
+            ID
+          </th>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          >
+            User
+          </th>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          >
+            Amount
+          </th>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          >
+            Created At
+          </th>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          >
+            Products
+          </th>
+          <th
+            class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+            [ngClass]="
+              color === 'light'
+                ? 'bg-gray-100 text-gray-600 border-gray-200'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+          ></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td
+            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left flex items-center"
+          >
+            <span
+              class="ml-3 font-bold"
+              [ngClass]="color === 'light' ? 'text-gray-700' : 'text-white'"
+            >
+            {{ order.id }}
+            </span>
+          </td>
+          <td
+            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+          >
+          {{ order.idUser }}
+          </td>
+          <td
+            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+          >
+          {{ order.amount }} €
+          </td>
+          <td
+            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+          >
+          {{ order.createdAt }}
+          </td>
+          <td
+            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+          >
+          {{ order.products | json }}
+          </td>
+          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-right">
+            <app-product-dropdown></app-product-dropdown>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
