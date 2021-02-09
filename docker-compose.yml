@@ -139,14 +139,82 @@ services:
       - db
       - order
 
+# Cart microservice
+
+  cart_back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    depends_on:
+      - cart_db
+    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    env_file:
+      - '.env/db.env'
+      - '.env/cart.env'
+    volumes:
+      - ${PWD}/volumes/back/cart:/opt/app
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    networks:
+      - cart
+      - inventory
+
+  cart_db:
+    image: mysql:8
+    env_file:
+      - '.env/db.env'
+      - '.env/cart.env'
+    volumes:
+      - ${PWD}/volumes/db/cart_data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - db
+      - cart
+
+# Search microservice
+
+  search_back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    depends_on:
+      - search_db
+    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    env_file:
+      - '.env/db.env'
+      - '.env/search.env'
+    volumes:
+      - ${PWD}/volumes/back/search:/opt/app
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    networks:
+      - search
+      - inventory
+
+  search_db:
+    image: mysql:8
+    env_file:
+      - '.env/db.env'
+      - '.env/search.env'
+    volumes:
+      - ${PWD}/volumes/db/search_data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - db
+      - search
+
 networks:
   db:
     name: db
   authentication:
     name: authentication
+  cart:
+    name: cart
   inventory:
     name: inventory
   order:
     name: order
+  search:
+    name: search
   web:
     name: web
