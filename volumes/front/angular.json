@@ -18,6 +18,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
+            "preserveSymlinks": true,
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
@@ -27,7 +28,7 @@
             "styles": [
               "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/assets/styles/tailwind.css",
+              "src/assets/styles/tailwind.css"
             ],
             "scripts": []
           },
