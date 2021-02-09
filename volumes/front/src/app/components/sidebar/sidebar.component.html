@@ -21,7 +21,7 @@
         Tailwind Angular
       </span>
       <span class="hidden sm:block">
-        MicroStore
+        Microshop
       </span>
     </a>
     <!-- User -->
@@ -48,7 +48,7 @@
               [routerLink]="['/']"
               class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
             >
-              MicroStore
+            Microshop
             </a>
           </div>
           <div class="w-6/12 flex justify-end">
@@ -79,7 +79,7 @@
       <h6
         class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
       >
-        Admin Layout Pages
+        Admin
       </h6>
       <!-- Navigation -->
 
@@ -108,28 +108,6 @@
 
         <li class="items-center">
           <a
-            [routerLink]="['/admin/settings']"
-            class="text-xs uppercase py-3 font-bold block"
-            routerLinkActive
-            #adminSettings="routerLinkActive"
-            [ngClass]="
-              adminSettings.isActive
-                ? 'text-red-600 hover:text-red-700'
-                : 'text-gray-800 hover:text-gray-600'
-            "
-          >
-            <i
-              class="fas fa-tools mr-2 text-sm"
-              [ngClass]="
-                adminSettings.isActive ? 'opacity-75' : 'text-gray-400'
-              "
-            ></i>
-            Products
-          </a>
-        </li>
-
-        <li class="items-center">
-          <a
             [routerLink]="['/admin/tables']"
             class="text-xs uppercase py-3 font-bold block"
             routerLinkActive
@@ -148,39 +126,6 @@
           </a>
         </li>
       </ul>
-
-      <!-- Divider -->
-      <hr class="my-4 md:min-w-full" />
-      <!-- Heading -->
-      <h6
-        class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-      >
-        Auth Layout Pages
-      </h6>
-      <!-- Navigation -->
-
-      <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-        <li class="items-center">
-          <a
-            [routerLink]="['/auth/login']"
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-          >
-            <i class="fas fa-fingerprint text-gray-400 mr-2 text-sm"></i>
-            Login
-          </a>
-        </li>
-
-        <li class="items-center">
-          <a
-            [routerLink]="['/auth/register']"
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-          >
-            <i class="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>
-            Register
-          </a>
-        </li>
-      </ul>
-
     </div>
   </div>
 </nav>

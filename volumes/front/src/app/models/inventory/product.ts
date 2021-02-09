@@ -1,4 +1,3 @@
-import { Category } from './category';
 import { Image } from './image';
 
 export interface Product {
@@ -7,6 +6,5 @@ export interface Product {
   description: string,
   price: number,
   images: Image[],
-  stock: number,
-  category: Category
+  stock: number
 }

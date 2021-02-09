@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Product } from 'src/app/models/product';
-import { ProductsService } from 'src/app/services/products.service';
+import { Product } from 'src/app/models/inventory/product';
+import { InventoryService } from 'src/app/services/inventory/inventory.service';
 
 @Component({
   selector: "app-card-products",
@@ -17,10 +17,10 @@ export class CardProductsComponent implements OnInit {
   }
   private _color = "light";
 
-  constructor(private productService: ProductsService) { }
+  constructor(private inventoryService: InventoryService) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(
+    this.inventoryService.getProducts().subscribe(
       data =>{
         this.products = data["products"];
       }
