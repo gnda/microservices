@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-index-navbar",
-  templateUrl: "./index-navbar.component.html",
+  selector: "app-front-navbar",
+  templateUrl: "./front-navbar.component.html",
 })
-export class IndexNavbarComponent implements OnInit {
+export class FrontNavbarComponent implements OnInit {
   navbarOpen = false;
 
   constructor() {}

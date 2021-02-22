@@ -42,8 +42,10 @@ services:
     networks:
       - web
       - authentication
+      - cart
       - inventory
       - order
+      - search
 
 # Authentication microservice
 

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 // layouts
 import { AdminComponent } from "./layouts/admin/admin.component";
 import { AuthComponent } from "./layouts/auth/auth.component";
+import { FrontComponent } from './layouts/front/front.component';
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
@@ -16,7 +17,7 @@ import { LoginComponent } from "./views/auth/login/login.component";
 import { RegisterComponent } from "./views/auth/register/register.component";
 
 // no layouts views
-import { IndexComponent } from "./views/index/index.component";
+import { IndexComponent } from "./views/front/index/index.component";
 import { LandingComponent } from "./views/landing/landing.component";
 import { ProfileComponent } from "./views/profile/profile.component";
 
@@ -42,8 +43,15 @@ const routes: Routes = [
       { path: "", redirectTo: "login", pathMatch: "full" },
     ],
   },
-  // no layout views
-  { path: "", component: IndexComponent },
+  // front views
+  {
+    path: "",
+    component: FrontComponent,
+    children: [
+      { path: "", component: IndexComponent },
+    ],
+  },
+  // no views
   { path: "**", redirectTo: "", pathMatch: "full" },
 ];
 

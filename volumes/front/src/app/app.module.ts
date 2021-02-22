@@ -8,6 +8,7 @@ import { AppComponent } from "./app.component";
 // layouts
 import { AdminComponent } from "./layouts/admin/admin.component";
 import { AuthComponent } from "./layouts/auth/auth.component";
+import { FrontComponent } from './layouts/front/front.component';
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
@@ -20,7 +21,7 @@ import { LoginComponent } from "./views/auth/login/login.component";
 import { RegisterComponent } from "./views/auth/register/register.component";
 
 // no layouts views
-import { IndexComponent } from "./views/index/index.component";
+import { IndexComponent } from "./views/front/index/index.component";
 import { LandingComponent } from "./views/landing/landing.component";
 import { ProfileComponent } from "./views/profile/profile.component";
 
@@ -41,7 +42,7 @@ import { FooterAdminComponent } from "./components/footers/footer-admin/footer-a
 import { FooterComponent } from "./components/footers/footer/footer.component";
 import { FooterSmallComponent } from "./components/footers/footer-small/footer-small.component";
 import { HeaderStatsComponent } from "./components/headers/header-stats/header-stats.component";
-import { IndexNavbarComponent } from "./components/navbars/index-navbar/index-navbar.component";
+import { FrontNavbarComponent } from "./components/navbars/front-navbar/front-navbar.component";
 import { MapExampleComponent } from "./components/maps/map-example/map-example.component";
 import { IndexDropdownComponent } from "./components/dropdowns/index-dropdown/index-dropdown.component";
 import { TableDropdownComponent } from "./components/dropdowns/table-dropdown/table-dropdown.component";
@@ -53,6 +54,7 @@ import { ProductDropdownComponent } from './components/dropdowns/product-dropdow
 import { CardUsersComponent } from './components/cards/card-users/card-users.component';
 import { CardOrdersComponent } from './components/cards/card-orders/card-orders.component';
 import { CardCartsComponent } from './components/cards/card-carts/card-carts.component';
+import { SearchProductsComponent } from './components/search/search-products/search-products.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,7 @@ import { CardCartsComponent } from './components/cards/card-carts/card-carts.com
     MapExampleComponent,
     AuthNavbarComponent,
     AdminNavbarComponent,
-    IndexNavbarComponent,
+    FrontNavbarComponent,
     AdminComponent,
     AuthComponent,
     MapsComponent,
@@ -95,6 +97,8 @@ import { CardCartsComponent } from './components/cards/card-carts/card-carts.com
     CardUsersComponent,
     CardOrdersComponent,
     CardCartsComponent,
+    FrontComponent,
+    SearchProductsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
