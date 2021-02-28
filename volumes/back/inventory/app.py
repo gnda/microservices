@@ -28,7 +28,7 @@ def token_required(controller_function):
         auth_token = request.headers.get('Authorization', '')
         if not auth_token:
             abort(403, 'Not authorized')
-        user = requests.get(os.environ['AUTH_MICROSERVICE_ADDRESS'], headers={'Authorization': auth_token})
+        user = requests.get(os.environ['AUTH_MICROSERVICE_ADDRESS'] + "/verify", headers={'Authorization': auth_token})
         # If the Response Json has an account_id which is not empty, the user is valid
         if user:
             return controller_function(user, *args, **kwargs)

@@ -29,30 +29,6 @@ services:
       file: web.yml
       service: front
 
-  #web_proxy:
-  #  build:
-  #    context:  ./docker/front/
-  #    dockerfile: Dockerfile.nginx
-  #  depends_on:
-  #    - web_back
-  #  volumes:
-  #    - ./.volumes/config/certs:/etc/certs
-  #    - /etc/localtime:/etc/localtime:ro
-  #  networks:
-  #    - web
-  #    - authentication
-  #    - cart
-  #    - inventory
-  #    - order
-  #    - search
-  #  labels:
-  #    traefik.enable: true
-  #    traefik.http.routers.proxy.entrypoints: "websecure"
-  #    traefik.http.routers.proxy.rule: "Host(`localhost`)"
-  #    traefik.http.routers.proxy.middlewares: "security@file, compression@file"
-  #    traefik.http.routers.proxy.tls: "true"
-  #    traefik.docker.network: "proxy"
-
 # Authentication microservice
 
   authentication_back:
