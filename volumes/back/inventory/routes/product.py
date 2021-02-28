@@ -4,8 +4,9 @@ from models.product import Product
 from schemas.image import ImageSchema
 from schemas.product import ProductSchema
 
-@token_required
+
 @app.route('/api/products', methods=['GET'])
+@token_required
 def get_all_products():
     get_products = Product.query.all()
     product_schema = ProductSchema(many=True)

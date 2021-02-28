@@ -158,7 +158,7 @@ class SecretResource(Resource):
 
 class Verify(Resource):
     def post(self):
-        authorizationHeader = request.headers.get('authorization')
+        authorizationHeader = request.headers.get('Authorization')
         token = authorizationHeader.replace("Bearer ", "")
         verification = UserModel.verify(token)
         return verification

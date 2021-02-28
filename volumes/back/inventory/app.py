@@ -1,4 +1,5 @@
 import os
+import requests
 from flask import Flask, request, abort
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -24,14 +25,18 @@ def token_required(controller_function):
     def wrapper_function(*args, **kwargs):
         # Make endpoint in the Auth Service to validate an Auth Token
         # The endpoint will return details such as User's Account ID
-        auth_token = request.headers.get('authorization', '')
-        user = request.get(os.environ['AUTH_MICROSERVICE_ADDRESS'], headers={'AuthToken': auth_token})
+        auth_token = request.headers.get('Authorization', '')
+        if not auth_token:
+            abort(403, 'Not authorized')
+        user = requests.get(os.environ['AUTH_MICROSERVICE_ADDRESS'], headers={'Authorization': auth_token})
         # If the Response Json has an account_id which is not empty, the user is valid
         if user:
-            controller_function(user, *args, **kwargs)
+            return controller_function(user, *args, **kwargs)
         else:
             # You can also redirect the user to the login page.
             abort(403, 'Invalid user')
+
+    return wrapper_function
 
 from models import product, image
 db.create_all()
