@@ -1,0 +1,9 @@
+FROM golang:1.16.0-alpine3.13
+
+ARG MKCERT_VERSION
+ARG domains
+
+RUN mkdir temp && \
+    cd temp && \
+    go mod init mkcert/build && \
+    go get -u "filippo.io/mkcert@${MKCERT_VERSION}"

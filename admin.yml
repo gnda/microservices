@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  # Adminer to manage databases
+
+  adminer:
+    image: adminer:4.8.0
+    networks:
+      - db
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.adminer.entrypoints: "websecure"
+      traefik.http.routers.adminer.rule: "Host(`admin.localhost`)"
+      traefik.http.routers.adminer.middlewares: "security@file, compression@file"
+      traefik.http.routers.adminer.tls: "true"
+      traefik.docker.network: "proxy"
+      traefik.port: 8080
+
+  # Self-signed certs generation service for local development
+
+  certs:
+    build:
+      context: ./docker/dev/
+      dockerfile: Dockerfile.certs
+      args:
+        MKCERT_VERSION: 'v1.4.3'
+    image: certs:golang-alpine-custom
+    command: "sh -c 'mkcert -cert-file local-cert.pem \
+                            -key-file local-key.pem \
+                            $$(echo $$domains)'"
+    environment:
+      domains: '*.localhost'
+    volumes:
+      - ./volumes/admin/certs:/root/.local/share/mkcert
+    working_dir: '/root/.local/share/mkcert'
+
+  # Traefik service
+
+  traefik:
+    image: traefik:v2.4.5
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./volumes/admin/certs:/etc/certs
+      - ./volumes/admin/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./volumes/admin/traefik/dynamic.yml:/dynamic.yml:ro
+      - ./volumes/admin/traefik/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      traefik.enable: true
+      traefik.http.routers.dashboard.entrypoints: "websecure"
+      traefik.http.routers.dashboard.rule: "Host(`traefik.localhost`)"
+      traefik.http.routers.dashboard.service: "api@internal"
+      traefik.http.routers.dashboard.tls: "true"

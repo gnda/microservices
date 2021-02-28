@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+
+# Front microservice
+
+  front:
+    build:
+      context:  ./docker/front/
+      dockerfile: Dockerfile.node
+    entrypoint:
+      sh -c "ln -sf /install/node_modules node_modules &&
+      ln -sf /install/package.json package.json &&
+      ln -sf /install/package-lock.json package-lock.json &&
+      npm run build:tailwind &&
+      ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
+    volumes:
+      - ./volumes/front:/usr/src/app
+    working_dir: /usr/src/app
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.http.routers.front.entrypoints: "websecure"
+      traefik.http.routers.front.rule: "Host(`localhost`)"
+      traefik.http.routers.front.middlewares: "security@file, compression@file"
+      traefik.http.routers.front.tls: "true"
+      traefik.docker.network: "proxy"
+      traefik.port: 5000
+
+  # Python Flask based back server
+
+  back:
+    build:
+      context: ./docker/back/
+      dockerfile: Dockerfile.python
+    restart: unless-stopped
+    command: "sh -c '/bin/wait-for $$MYSQL_HOST:$$MYSQL_PORT -- \
+                     python -m flask run --host=0.0.0.0 --port=8000'"
+    env_file:
+      - '.env/db.env'
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /opt/app
+    expose:
+      - 8000
+    networks:
+      - proxy 
+    labels:
+      traefik.enable: true
+      traefik.docker.network: "proxy"
+      traefik.port: 8000
+
+  # MySQL Database
+
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    env_file:
+      - '.env/db.env'
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - db
+    labels:
+      traefik.enable: false

@@ -1,0 +1,38 @@
+global:
+  sendAnonymousUsage: false
+  checkNewVersion: false
+
+api:
+  insecure: false
+
+log:
+  level: INFO
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    watch: true
+    swarmMode: false
+
+  file:
+    directory: .
+    watch: true
+
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: :443
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/certs/local-cert.pem
+        keyFile:  /etc/certs/local-key.pem

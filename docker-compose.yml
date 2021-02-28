@@ -1,208 +1,211 @@
-version: "3.8"
+version: "3.9"
 services:
+
+# Self-signed certs generation service for local development
+
+  certs:
+    extends:
+      file: admin.yml
+      service: certs
+
+# Traefik service
+
+  traefik:
+    extends:
+      file: admin.yml
+      service: traefik
 
 # Adminer to manage databases
 
   adminer:
-    image: adminer:latest
-    ports:
-      - 8080:8080
-    networks:
-      - db
+    extends:
+      file: admin.yml
+      service: adminer
 
 # Front microservice
 
-  web_back:
-    build:
-      context:  ./docker/front/
-      dockerfile: Dockerfile.node
-    entrypoint:
-      sh -c "ln -sf /install/node_modules node_modules &&
-      ln -sf /install/package.json package.json &&
-      ln -sf /install/package-lock.json package-lock.json &&
-      npm run build:tailwind &&
-      ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
-    volumes:
-      - ./volumes/front:/usr/src/app
-    working_dir: /usr/src/app
-    networks:
-      - web
+  front:
+    extends:
+      file: web.yml
+      service: front
 
-  web_proxy:
-    build:
-      context:  ./docker/front/
-      dockerfile: Dockerfile.nginx
-    depends_on:
-      - web_back
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - web
-      - authentication
-      - cart
-      - inventory
-      - order
-      - search
+  #web_proxy:
+  #  build:
+  #    context:  ./docker/front/
+  #    dockerfile: Dockerfile.nginx
+  #  depends_on:
+  #    - web_back
+  #  volumes:
+  #    - ./.volumes/config/certs:/etc/certs
+  #    - /etc/localtime:/etc/localtime:ro
+  #  networks:
+  #    - web
+  #    - authentication
+  #    - cart
+  #    - inventory
+  #    - order
+  #    - search
+  #  labels:
+  #    traefik.enable: true
+  #    traefik.http.routers.proxy.entrypoints: "websecure"
+  #    traefik.http.routers.proxy.rule: "Host(`localhost`)"
+  #    traefik.http.routers.proxy.middlewares: "security@file, compression@file"
+  #    traefik.http.routers.proxy.tls: "true"
+  #    traefik.docker.network: "proxy"
 
 # Authentication microservice
 
   authentication_back:
-    build:
-      context: ./docker/back/
-      dockerfile: Dockerfile.python
     depends_on:
       - authentication_db
-    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    extends:
+      file: web.yml
+      service: back
     env_file:
-      - '.env/db.env'
       - '.env/authentication.env'
     volumes:
-      - ${PWD}/volumes/back/authentication:/opt/app
-      - /etc/localtime:/etc/localtime:ro
-    working_dir: /opt/app
+      - ./volumes/back/authentication:/opt/app
     networks:
       - authentication
+    labels:
+      traefik.http.routers.authentication.rule: "Host(`authentication.localhost`)"
+      traefik.http.routers.authentication.entrypoints: "websecure"
+      traefik.http.routers.authentication.middlewares: "security@file, compression@file"
+      traefik.http.routers.authentication.tls: "true"
 
   authentication_db:
-    image: mysql:8
+    extends:
+      file: web.yml
+      service: db
     env_file:
-      - '.env/db.env'
       - '.env/authentication.env'
     volumes:
-      - ${PWD}/volumes/db/authentication_data:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/db/authentication_data:/var/lib/mysql
     networks:
-      - db
       - authentication
 
 # Inventory microservice
 
   inventory_back:
-    build:
-      context: ./docker/back/
-      dockerfile: Dockerfile.python
     depends_on:
       - inventory_db
-    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    extends:
+      file: web.yml
+      service: back
     env_file:
-      - '.env/db.env'
       - '.env/inventory.env'
     volumes:
-      - ${PWD}/volumes/back/inventory:/opt/app
-      - /etc/localtime:/etc/localtime:ro
-    working_dir: /opt/app
+      - ./volumes/back/inventory:/opt/app
     networks:
       - inventory
+    labels:
+      traefik.http.routers.inventory.rule: "Host(`inventory.localhost`)"
+      traefik.http.routers.inventory.entrypoints: "websecure"
+      traefik.http.routers.inventory.middlewares: "security@file, compression@file"
+      traefik.http.routers.inventory.tls: "true"
 
   inventory_db:
-    image: mysql:8
+    extends:
+      file: web.yml
+      service: db
     env_file:
-      - '.env/db.env'
       - '.env/inventory.env'
     volumes:
-      - ${PWD}/volumes/db/inventory_data:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/db/inventory_data:/var/lib/mysql
     networks:
-      - db
       - inventory
 
 # Order microservice
 
   order_back:
-    build:
-      context: ./docker/back/
-      dockerfile: Dockerfile.python
     depends_on:
       - order_db
-    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    extends:
+      file: web.yml
+      service: back
     env_file:
-      - '.env/db.env'
       - '.env/order.env'
     volumes:
-      - ${PWD}/volumes/back/order:/opt/app
-      - /etc/localtime:/etc/localtime:ro
-    working_dir: /opt/app
+      - ./volumes/back/order:/opt/app
     networks:
       - order
-      - inventory
+    labels:
+      traefik.http.routers.order.rule: "Host(`order.localhost`)"
+      traefik.http.routers.order.entrypoints: "websecure"
+      traefik.http.routers.order.middlewares: "security@file, compression@file"
+      traefik.http.routers.order.tls: "true"
 
   order_db:
-    image: mysql:8
+    extends:
+      file: web.yml
+      service: db
     env_file:
-      - '.env/db.env'
       - '.env/order.env'
     volumes:
-      - ${PWD}/volumes/db/order_data:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/db/order_data:/var/lib/mysql
     networks:
-      - db
       - order
 
 # Cart microservice
 
   cart_back:
-    build:
-      context: ./docker/back/
-      dockerfile: Dockerfile.python
     depends_on:
       - cart_db
-    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    extends:
+      file: web.yml
+      service: back
     env_file:
-      - '.env/db.env'
       - '.env/cart.env'
     volumes:
-      - ${PWD}/volumes/back/cart:/opt/app
-      - /etc/localtime:/etc/localtime:ro
-    working_dir: /opt/app
+      - ./volumes/back/cart:/opt/app
     networks:
       - cart
-      - inventory
+    labels:
+      traefik.http.routers.cart.rule: "Host(`cart.localhost`)"
+      traefik.http.routers.cart.entrypoints: "websecure"
+      traefik.http.routers.cart.middlewares: "security@file, compression@file"
+      traefik.http.routers.cart.tls: "true"
 
   cart_db:
-    image: mysql:8
+    extends:
+      file: web.yml
+      service: db
     env_file:
-      - '.env/db.env'
       - '.env/cart.env'
     volumes:
-      - ${PWD}/volumes/db/cart_data:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/db/cart_data:/var/lib/mysql
     networks:
-      - db
       - cart
 
 # Search microservice
 
   search_back:
-    build:
-      context: ./docker/back/
-      dockerfile: Dockerfile.python
     depends_on:
       - search_db
-    entrypoint: "python -m flask run --host=0.0.0.0 --port=8000"
+    extends:
+      file: web.yml
+      service: back
     env_file:
-      - '.env/db.env'
       - '.env/search.env'
     volumes:
-      - ${PWD}/volumes/back/search:/opt/app
-      - /etc/localtime:/etc/localtime:ro
-    working_dir: /opt/app
+      - ./volumes/back/search:/opt/app
     networks:
       - search
-      - inventory
+    labels:
+      traefik.http.routers.search.rule: "Host(`search.localhost`)"
+      traefik.http.routers.search.entrypoints: "websecure"
+      traefik.http.routers.search.middlewares: "security@file, compression@file"
+      traefik.http.routers.search.tls: "true"
 
   search_db:
-    image: mysql:8
+    extends:
+      file: web.yml
+      service: db
     env_file:
-      - '.env/db.env'
       - '.env/search.env'
     volumes:
-      - ${PWD}/volumes/db/search_data:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/db/search_data:/var/lib/mysql
     networks:
-      - db
       - search
 
 networks:
@@ -218,5 +221,5 @@ networks:
     name: order
   search:
     name: search
-  web:
-    name: web
+  proxy:
+    name: proxy
