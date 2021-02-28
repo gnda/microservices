@@ -1,9 +1,11 @@
 FROM python:3.7-alpine
 
-ADD requirements.txt  /opt/app/
+ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0-beta.1/wait-for /bin
+COPY requirements.txt  /opt/app/
 
-RUN apk update &&\
-    apk add gcc musl-dev libffi-dev openssl-dev rust cargo &&\
-    cd /opt/app/ &&\
-    python3 -m ensurepip &&\
+RUN chmod 755 /bin/wait-for && \
+    apk update && \
+    apk add gcc musl-dev libffi-dev openssl-dev rust cargo && \
+    cd /opt/app/ && \
+    python3 -m ensurepip && \
     python3 -m pip install --upgrade pip -r requirements.txt

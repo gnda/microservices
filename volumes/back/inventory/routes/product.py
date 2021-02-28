@@ -1,11 +1,8 @@
-from app import app, db
+from app import app, db, token_required
 from flask import request, jsonify, make_response
 from models.product import Product
 from schemas.image import ImageSchema
 from schemas.product import ProductSchema
-
-from volumes.back.inventory.app import token_required
-
 
 @token_required
 @app.route('/api/products', methods=['GET'])

@@ -1,8 +1,9 @@
 Flask
 flask-cors
-flask-jwt-extended
+PyJWT==1.6.1
+Flask-JWT-Extended
 flask-marshmallow
-flask-restful
+Flask-RESTful
 Flask-SQLAlchemy
 marshmallow-sqlalchemy
 cryptography
