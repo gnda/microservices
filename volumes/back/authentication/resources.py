@@ -1,3 +1,4 @@
+from flask import request
 from models import UserModel, RevokedTokenModel
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (
@@ -149,7 +150,15 @@ class SecretResource(Resource):
     Secrest Resource Api
     You can create crud operation in this way
     """
-    
+
     @jwt_required
     def get(self):
         return {'answer': 'You are accessing super secret blueprint'}
+
+
+class Verify(Resource):
+    def post(self):
+        authorizationHeader = request.headers.get('authorization')
+        token = authorizationHeader.replace("Bearer ", "")
+        verification = UserModel.verify(token)
+        return verification

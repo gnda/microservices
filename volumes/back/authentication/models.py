@@ -1,5 +1,8 @@
+import os
+
 from app import db
 from passlib.hash import pbkdf2_sha256 as sha256
+import jwt
 
 class UserModel(db.Model):
     """
@@ -65,6 +68,14 @@ class UserModel(db.Model):
     @staticmethod
     def verify_hash(password, hash_):
         return sha256.verify(password, hash_)
+
+    def verify_token(token):
+        try:
+            decoded = jwt.decode(token, os.environ['AUTHSECRET'], algorithms=['HS256'])
+            return decoded
+        except (Exception) as error:
+            print(error)
+            return {"success": False}
 
 
 class RevokedTokenModel(db.Model):

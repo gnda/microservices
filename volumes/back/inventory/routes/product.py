@@ -4,6 +4,10 @@ from models.product import Product
 from schemas.image import ImageSchema
 from schemas.product import ProductSchema
 
+from volumes.back.inventory.app import token_required
+
+
+@token_required
 @app.route('/api/products', methods=['GET'])
 def get_all_products():
     get_products = Product.query.all()
