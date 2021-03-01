@@ -7,7 +7,7 @@ from schemas.product import ProductSchema
 
 @app.route('/api/products', methods=['GET'])
 @token_required
-def get_all_products():
+def get_all_products(user, *args, **kwargs):
     get_products = Product.query.all()
     product_schema = ProductSchema(many=True)
     products = product_schema.dump(get_products)
