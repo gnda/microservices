@@ -1,3 +1,4 @@
+import os
 import requests
 from app import app, db
 from flask import request, jsonify, make_response
@@ -38,13 +39,13 @@ def create_order():
         if not products:
             return make_response("empty order", 400)
         for product in products:
-            r = requests.get('http://inventory_back:8000/api/products/' + str(product['id']))
+            r = requests.get(os.environ['INVENTORY_ADDRESS'] + '/api/products/' + str(product['id']))
             if not r.json()['product']:
                 return make_response("non existent product", 404)
             if r.json()['product']['stock'] < int(product['quantity']):
                 return make_response("not enough stock for product"+str(product['id']), 400)
             new_stock = int(r.json()['product']['stock']) - int(product['quantity'])
-            requests.put('http://inventory_back:8000/api/products/' + str(product['id']), json={'stock': str(new_stock)})
+            requests.put(os.environ['INVENTORY_ADDRESS'] + '/api/products/' + str(product['id']), json={'stock': str(new_stock)})
     order_schema = OrderSchema()
     order = order_schema.load(data)
     result = order_schema.dump(order.create())

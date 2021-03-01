@@ -1,9 +1,11 @@
+import os
 import requests
 from app import app, db
 from flask import request, jsonify, make_response
 from datetime import date
 from models.cart import Cart
 from schemas.cart import CartSchema
+
 
 
 @app.route('/api/carts', methods=['GET'])
@@ -37,7 +39,7 @@ def create_cart():
         if not products:
             return make_response("empty cart", 400)
         for key, product in enumerate(products):
-            r = requests.get('http://inventory_back:8000/api/products/' + str(product['id']))
+            r = requests.get(os.environ['INVENTORY_ADDRESS'] + '/api/products/' + str(product['id']))
             if not r.json()['product']:
                 return make_response("non existent product", 404)
             if r.json()['product']['stock'] < int(product['quantity']):
@@ -54,7 +56,7 @@ def validate(cart_id):
     cart = Cart.query.filter(Cart.id == cart_id).first()
     total_amount = sum(int(p['amount']) for p in cart.products)
     data = {"idUser": str(cart.idUser), "amount": str(total_amount), "products": cart.products}
-    r = requests.post('http://order_back:8000/api/orders', json=data)
+    r = requests.post(os.environ['ORDER_ADDRESS'] + '/api/orders', json=data)
     return str(r.reason)
 
 @app.route('/api/carts/<cart_id>', methods=['PUT'])
