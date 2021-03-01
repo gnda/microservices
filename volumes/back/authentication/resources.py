@@ -160,5 +160,5 @@ class Verify(Resource):
     def post(self):
         authorizationHeader = request.headers.get('Authorization')
         token = authorizationHeader.replace("Bearer ", "")
-        verification = UserModel.verify(token)
+        verification = UserModel.verify_token(token)
         return verification

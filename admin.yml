@@ -9,10 +9,10 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.adminer.entrypoints: "websecure"
+      traefik.http.routers.adminer.entrypoints: "web"
       traefik.http.routers.adminer.rule: "Host(`admin.localhost`)"
       traefik.http.routers.adminer.middlewares: "security@file, compression@file"
-      traefik.http.routers.adminer.tls: "true"
+      #traefik.http.routers.adminer.tls: "true"
       traefik.docker.network: "proxy"
       traefik.port: 8080
 
@@ -53,7 +53,7 @@ services:
       - 443:443
     labels:
       traefik.enable: true
-      traefik.http.routers.dashboard.entrypoints: "websecure"
+      traefik.http.routers.dashboard.entrypoints: "web"
       traefik.http.routers.dashboard.rule: "Host(`traefik.localhost`)"
       traefik.http.routers.dashboard.service: "api@internal"
-      traefik.http.routers.dashboard.tls: "true"
+      #traefik.http.routers.dashboard.tls: "true"

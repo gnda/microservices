@@ -36,8 +36,8 @@ http:
         contentTypeNosniff: true
         forceSTSHeader: true
         frameDeny: true
-        sslRedirect: true
-        sslForceHost: true
+        #sslRedirect: true
+        #sslForceHost: true
         stsPreload: true
         #ContentSecurityPolicy = "default-src 'self' 'unsafe-inline'"
         customFrameOptionsValue: SAMEORIGIN

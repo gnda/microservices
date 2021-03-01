@@ -20,10 +20,10 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.front.entrypoints: "websecure"
+      traefik.http.routers.front.entrypoints: "web"
       traefik.http.routers.front.rule: "Host(`localhost`)"
       traefik.http.routers.front.middlewares: "security@file, compression@file"
-      traefik.http.routers.front.tls: "true"
+      #traefik.http.routers.front.tls: "true"
       traefik.docker.network: "proxy"
       traefik.port: 5000
 
@@ -35,7 +35,9 @@ services:
       dockerfile: Dockerfile.python
     restart: unless-stopped
     command: "sh -c '/bin/wait-for $$MYSQL_HOST:$$MYSQL_PORT -- \
-                     python -m flask run --host=0.0.0.0 --port=8000'"
+                     python -u -m flask run --host=0.0.0.0 --port=8000'"
+    environment:
+      PYTHONUNBUFFERED: 0
     env_file:
       - '.env/db.env'
     volumes:

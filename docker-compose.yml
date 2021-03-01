@@ -3,10 +3,10 @@ services:
 
 # Self-signed certs generation service for local development
 
-  certs:
-    extends:
-      file: admin.yml
-      service: certs
+  # certs:
+  #   extends:
+  #     file: admin.yml
+  #     service: certs
 
 # Traefik service
 
@@ -45,9 +45,9 @@ services:
       - authentication
     labels:
       traefik.http.routers.authentication.rule: "Host(`authentication.localhost`)"
-      traefik.http.routers.authentication.entrypoints: "websecure"
+      traefik.http.routers.authentication.entrypoints: "web"
       traefik.http.routers.authentication.middlewares: "security@file, compression@file"
-      traefik.http.routers.authentication.tls: "true"
+      #traefik.http.routers.authentication.tls: "true"
 
   authentication_db:
     extends:
@@ -76,9 +76,9 @@ services:
       - inventory
     labels:
       traefik.http.routers.inventory.rule: "Host(`inventory.localhost`)"
-      traefik.http.routers.inventory.entrypoints: "websecure"
+      traefik.http.routers.inventory.entrypoints: "web"
       traefik.http.routers.inventory.middlewares: "security@file, compression@file"
-      traefik.http.routers.inventory.tls: "true"
+      #traefik.http.routers.inventory.tls: "true"
 
   inventory_db:
     extends:
@@ -107,9 +107,9 @@ services:
       - order
     labels:
       traefik.http.routers.order.rule: "Host(`order.localhost`)"
-      traefik.http.routers.order.entrypoints: "websecure"
+      traefik.http.routers.order.entrypoints: "web"
       traefik.http.routers.order.middlewares: "security@file, compression@file"
-      traefik.http.routers.order.tls: "true"
+      #traefik.http.routers.order.tls: "true"
 
   order_db:
     extends:
@@ -138,9 +138,9 @@ services:
       - cart
     labels:
       traefik.http.routers.cart.rule: "Host(`cart.localhost`)"
-      traefik.http.routers.cart.entrypoints: "websecure"
+      traefik.http.routers.cart.entrypoints: "web"
       traefik.http.routers.cart.middlewares: "security@file, compression@file"
-      traefik.http.routers.cart.tls: "true"
+      #traefik.http.routers.cart.tls: "true"
 
   cart_db:
     extends:
@@ -169,9 +169,9 @@ services:
       - search
     labels:
       traefik.http.routers.search.rule: "Host(`search.localhost`)"
-      traefik.http.routers.search.entrypoints: "websecure"
+      traefik.http.routers.search.entrypoints: "web"
       traefik.http.routers.search.middlewares: "security@file, compression@file"
-      traefik.http.routers.search.tls: "true"
+      #traefik.http.routers.search.tls: "true"
 
   search_db:
     extends:
