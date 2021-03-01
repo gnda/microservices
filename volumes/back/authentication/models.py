@@ -71,7 +71,7 @@ class UserModel(db.Model):
 
     def verify_token(token):
         try:
-            decoded = jwt.decode(token, os.environ['AUTHSECRET'], algorithms=['HS256'])
+            decoded = jwt.decode(token, os.environ['JWT_SECRET_KEY'], algorithms=['HS256'])
             return decoded
         except (Exception) as error:
             print(error)
