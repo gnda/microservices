@@ -10,8 +10,7 @@ import { Cart } from '../../models/cart/cart';
 })
 export class CartService {
 
-  private baseUrl = `${environment.api + 'cart/carts'}`;
-  private apiKey = '?API_KEY='+environment.api_key;
+  private baseUrl = `${environment.api.CART_ADDRESS + '/api/carts'}`;
 
   constructor(private http: HttpClient) {}
 

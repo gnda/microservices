@@ -10,8 +10,7 @@ import { Order } from '../../models/order/order';
 })
 export class OrderService {
 
-  private baseUrl = `${environment.api + 'order/orders'}`;
-  private apiKey = '?API_KEY='+environment.api_key;
+  private baseUrl = `${environment.api.ORDER_ADDRESS + '/api/orders'}`;
 
   constructor(private http: HttpClient) {}
 

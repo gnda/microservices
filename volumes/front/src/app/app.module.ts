@@ -1,8 +1,10 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthenticationInterceptor } from './interceptors/authentication/authentication.interceptor';
 
 import { AppRoutingModule } from "./app-routing.module";
+import { AppJwtModule } from './app-jwt.module';
 import { AppComponent } from "./app.component";
 
 // layouts
@@ -98,10 +100,19 @@ import { SearchProductsComponent } from './components/search/search-products/sea
     CardOrdersComponent,
     CardCartsComponent,
     FrontComponent,
-    SearchProductsComponent,
+    SearchProductsComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AppJwtModule,
+    HttpClientModule,
+  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthenticationInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

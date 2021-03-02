@@ -10,13 +10,13 @@ import { Product } from '../../models/inventory/product';
 })
 export class InventoryService {
 
-  private baseUrl = `${environment.api + 'inventory/products'}`;
-  private apiKey = '?API_KEY='+environment.api_key;
+  private baseUrl = `${environment.api.INVENTORY_ADDRESS + '/api/products'}`;
 
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Response>{
-    return this.http.get<Response>(this.baseUrl);
+    let response = this.http.get<Response>(this.baseUrl);
+    return response;
   }
 
   getProductImages(): Observable<Response>{

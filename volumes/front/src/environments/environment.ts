@@ -4,8 +4,13 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost/api/',
-  api_key: 'adsffsdfds6b-6727-46f4-8bee-2c6ce6293e41'
+  api: {
+      AUTH_ADDRESS: "http://authentication.localhost",
+      INVENTORY_ADDRESS: "http://inventory.localhost",
+      ORDER_ADDRESS: "http://order.localhost",
+      SEARCH_ADDRESS: "http://search.localhost",
+      CART_ADDRESS: "http://cart.localhost",
+  }
 };
 
 /*

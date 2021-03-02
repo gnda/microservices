@@ -6,15 +6,13 @@ services:
   front:
     build:
       context:  ./docker/front/
-      dockerfile: Dockerfile.node
+      dockerfile: Dockerfile.node      
     entrypoint:
       sh -c "ln -sf /install/node_modules node_modules &&
       ln -sf /install/package.json package.json &&
       ln -sf /install/package-lock.json package-lock.json &&
       npm run build:tailwind &&
       ng serve --host 0.0.0.0 --port 5000 --disableHostCheck"
-    env_file:
-      - '.env/front_api.env'
     volumes:
       - ./volumes/front:/usr/src/app
     working_dir: /usr/src/app
