@@ -11,10 +11,15 @@ Vérifiez l'état des conteneurs avec :
 docker ps
 ```
 
+RDV sur localhost pour arriver sur la page d'accueil du site.
+
+***Vous aurez le message "Bad Gateway", le temps que les microservices de front et de back se lancent (2 - 3 minutes)***.
+
 S'il s'agit de la première fois que vous démarrez docker-compose dans le répertoire actif, il est normal que des conteneurs soient manquants car certains dépendent des bases de données MySQL.
 
 Les conteneurs MySQL sont en cours d'initialisation.\
-**Cela prend du temps si c'est la première fois si vous démarrez docker-compose dans le répertoire actif (pas de fichiers dans volumes/db)**
+**Cela prend du temps si c'est la première fois si vous démarrez docker-compose dans le répertoire actif (pas de fichiers dans volumes/db) \
+Compter environ 15 minutes.**
 
 Vous pouvez vérifier cela en faisant (par exemple pour le service inventory) :
 ```
@@ -23,7 +28,7 @@ docker logs microservices_inventory_db_1
 
 Il faut que la BDD soit prête à recevoir des connexions dans les logs.
 
-Les services en back attendent que les BDD soient initialisées avant de lancer chaque serveur Flask.
+Les services en back attendent que les BDD soient initialisées avant de lancer chaque serveur Flask. (healthcheck avec l'usage du script wait-for pour vérifier si l'addresse distante est disponible)
 
 Vérifiez que vous avez bien tous les conteneurs de lancé avec : ```docker ps```
 

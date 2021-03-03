@@ -57,6 +57,7 @@ services:
       - '.env/authentication.env'
     volumes:
       - ./volumes/db/authentication_data:/var/lib/mysql
+      - ./volumes/init/db/authentication_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - authentication
 
@@ -88,6 +89,7 @@ services:
       - '.env/inventory.env'
     volumes:
       - ./volumes/db/inventory_data:/var/lib/mysql
+      - ./volumes/init/db/inventory_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - inventory
 
@@ -119,6 +121,7 @@ services:
       - '.env/order.env'
     volumes:
       - ./volumes/db/order_data:/var/lib/mysql
+      - ./volumes/init/db/order_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - order
 
@@ -150,6 +153,7 @@ services:
       - '.env/cart.env'
     volumes:
       - ./volumes/db/cart_data:/var/lib/mysql
+      - ./volumes/init/db/cart_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - cart
 
