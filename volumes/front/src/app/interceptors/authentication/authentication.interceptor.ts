@@ -19,7 +19,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   private addToken(req: HttpRequest<unknown>): HttpRequest<unknown> {
     return req.clone({ headers: req.headers
-      .set('Authorization', `Bearer ${this.auth.getToken()}`)});
+      .set('Authorization', `Bearer ${this.auth.getToken()}`)
+    });
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -27,7 +28,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     let token = this.auth.getToken();
 
     const obs = of(token);
-
+    
+    console.log("aaaaa");
+    
     return obs.pipe(
       // Get the latest token from the auth service.
       map(token => req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) })),

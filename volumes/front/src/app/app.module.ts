@@ -105,14 +105,14 @@ import { SearchProductsComponent } from './components/search/search-products/sea
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppJwtModule,
+    //AppJwtModule,
     HttpClientModule,
   ],
-  providers: [{
+  /*providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthenticationInterceptor,
     multi: true
-  }],
+  }],*/
   bootstrap: [AppComponent],
 })
 export class AppModule {}
