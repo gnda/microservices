@@ -1,5 +1,3 @@
-### Les commandes suivantes sont à effectuer dans le répertoire cloné depuis ce dépôt
-
 ## Installation
 
 Pour déployer les conteneurs, il faut faire :
@@ -15,7 +13,7 @@ docker ps
 
 S'il s'agit de la première fois que vous démarrez docker-compose dans le répertoire actif, il est normal que des conteneurs soient manquants car certains dépendent des bases de données MySQL.
 
-Les conteneurs MySQL sont en cours d'initialisation et afin de  démarrer les services qui n'ont pas pu être lancés, il faut attendre qu'elle soit terminée.\
+Les conteneurs MySQL sont en cours d'initialisation.\
 **Cela prend du temps si c'est la première fois si vous démarrez docker-compose dans le répertoire actif (pas de fichiers dans volumes/db)**
 
 Vous pouvez vérifier cela en faisant (par exemple pour le service inventory) :
@@ -24,22 +22,22 @@ docker logs microservices_inventory_db_1
 ```
 
 Il faut que la BDD soit prête à recevoir des connexions dans les logs.
-Vous pouvez essayer de vous connecter sur le service adminer (voir plus bas), pour voir si vous accédez bien à la BDD.
 
-Ensuite, faire encore une fois :
-
-```
-docker-compose up -d --build
-```
+Les services en back attendent que les BDD soient initialisées avant de lancer chaque serveur Flask.
 
 Vérifiez que vous avez bien tous les conteneurs de lancé avec : ```docker ps```
 
 Voici les différents endpoints de l'application (voir docker/front/default.conf) :
 
 ```
+admin.localhost			  -->  adminer
+traefik.localhost		  -->  dashboard de traefik
 localhost 				  -->  point d'entrée unique exposé au web (front angular)
-localhost/api/inventory   -->  back du service inventory
-localhost/authentication  -->  back du service authentication
+inventory.localhost   	  -->  api du service inventory
+authentication.localhost  -->  api du service authentication
+cart.localhost  		  -->  api du service cart
+order.localhost  		  -->  api du service order
+search.localhost  		  -->  api du service search
 ```
 
 ## Réinstallation propre
@@ -95,11 +93,11 @@ Les dépendances python se situent dans ```docker/back/requirements.txt```
 Pour travailler avec l'API CRUD voici quelques commandes curl que vous pouvez lancer dans votre terminal (si vos conteneurs sont en marche) :
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"name":"Lenovo Legion Y520", "description":"PC Portable i5-7500H GTX 1060", "price":"450"}' http://localhost/api/inventory/products
-curl -H "Content-Type: application/json" -X PUT -d '{"name":"Lenovo Legion Y520", "description":"PC Portable i5-7500H GTX 1060", "price":"460"}' http://localhost/api/inventory/products/1
-curl -X DELETE http://localhost/api/inventory/products/1
+curl -H "Content-Type: application/json" -X POST -d '{"name":"Lenovo Legion Y520", "description":"PC Portable i5-7500H GTX 1060", "price":"450"}' http://inventory.localhost/api/products
+curl -H "Content-Type: application/json" -X PUT -d '{"name":"Lenovo Legion Y520", "description":"PC Portable i5-8500H GTX 950Ti", "price":"560"}' http://inventory.localhost/api/products
+curl -X DELETE http://inventory.localhost/api/products/1
 ```
 
 #### Service Adminer
 
-Pensez à aller sur ```localhost:8080``` pour accéder aux BDD via adminer, les identifiants sont dans le fichier .env qui est à la racine de ce dépôt.
+Pensez à aller sur ```admin.localhost``` pour accéder aux BDD via adminer, les identifiants sont dans le dossier .env qui est à la racine de ce dépôt.
