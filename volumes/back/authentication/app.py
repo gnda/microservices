@@ -3,6 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask_jwt_extended import JWTManager
 
 mysql_username = os.environ['MYSQL_USER']
@@ -26,6 +27,9 @@ api = Api(app)
 
 # SqlAlchemy object
 db = SQLAlchemy(app)
+
+# Marshmallow object
+ma = Marshmallow(app)
 
 # JwtManager object
 jwt = JWTManager(app)

@@ -1,6 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationInterceptor } from './interceptors/authentication/authentication.interceptor';
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -105,14 +106,16 @@ import { SearchProductsComponent } from './components/search/search-products/sea
   imports: [
     BrowserModule,
     AppRoutingModule,
-    //AppJwtModule,
+    AppJwtModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  /*providers: [{
+  providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthenticationInterceptor,
     multi: true
-  }],*/
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

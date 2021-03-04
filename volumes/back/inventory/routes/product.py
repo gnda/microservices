@@ -6,8 +6,7 @@ from schemas.product import ProductSchema
 
 
 @app.route('/api/products', methods=['GET'])
-@token_required
-def get_all_products(user, *args, **kwargs):
+def get_all_products():
     get_products = Product.query.all()
     product_schema = ProductSchema(many=True)
     products = product_schema.dump(get_products)
@@ -22,7 +21,8 @@ def get_one_product(product_id):
     return make_response(jsonify({"product": product}))
 
 @app.route('/api/products', methods=['POST'])
-def create_product():
+@token_required
+def create_product(*args, **kwargs):
     data = request.get_json()
     product_schema = ProductSchema()
     product = product_schema.load(data)
@@ -31,7 +31,9 @@ def create_product():
     return make_response(jsonify({"success": True}), 200)
 
 @app.route('/api/products/<product_id>', methods=['PUT'])
-def update_product(product_id):
+@token_required
+def update_product(*args, **kwargs):
+    product_id = args[0]
     data = request.get_json()
     get_product = Product.query.get(product_id)
     if data.get('name'):
@@ -49,7 +51,9 @@ def update_product(product_id):
     return make_response(jsonify({"product": product}))
 
 @app.route('/api/products/<product_id>', methods=['DELETE'])
-def delete_product_by_id(product_id):
+@token_required
+def delete_product_by_id(*args, **kwargs):
+    product_id = args[0]
     get_product = Product.query.get(product_id)
     db.session.delete(get_product)
     db.session.commit()

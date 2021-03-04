@@ -1,7 +1,7 @@
 import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Response } from '../../models/response';
 import { Product } from '../../models/inventory/product';
 
@@ -12,7 +12,11 @@ export class InventoryService {
 
   private baseUrl = `${environment.api.INVENTORY_ADDRESS + '/api/products'}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpAnon: HttpClient,
+              private http: HttpClient,
+              private handler: HttpBackend) {
+    this.httpAnon = new HttpClient(handler);
+  }
 
   getProducts(): Observable<Response>{
     let response = this.http.get<Response>(this.baseUrl);

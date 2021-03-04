@@ -35,7 +35,7 @@ def token_required(controller_function):
             # You can also redirect the user to the login page.
             abort(403, 'Invalid user')
         else:
-            return controller_function(user, *args, **kwargs)
+            return controller_function(*args, **kwargs)
 
     return wrapper_function
 

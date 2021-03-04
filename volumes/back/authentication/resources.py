@@ -1,5 +1,6 @@
 from flask import request
 from models import UserModel, RevokedTokenModel
+from schemas import UserSchema
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (
     create_access_token,
@@ -65,21 +66,25 @@ class UserLogin(Resource):
 
         # user does not exists
         if not current_user:
-            return {'message': f'User {username} doesn\'t exist'}
+            return {'message': f'User {username} doesn\'t exist'}, 404
 
         # user exists, comparing password and hash
         if UserModel.verify_hash(data['password'], current_user.password):
             # generating access token and refresh token
             access_token = create_access_token(identity=username)
             refresh_token = create_refresh_token(identity=username)
-
+    
+            user_schema = UserSchema(exclude=['id', 'password'])
+            user = user_schema.dump(current_user)
+    
             return {
+                'user': f'{user}',
                 'message': f'Logged in as {username}',
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }
         else:
-            return {'message': "Wrong credentials"}
+            return {'message': "Wrong credentials"}, 404
 
 
 class UserLogoutAccess(Resource):

@@ -33,6 +33,6 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `isAdmin`, `address`) VALUES
 (1,	'user',	'$pbkdf2-sha256$29000$3ntPqbWWMsb4H0PIeQ8BoA$C9pM9yD.xhnEn4VrEBIxY8MEyBPOL/hPc5PwIRMfgRY',	'test@test.com',	0,	'14 boulevard de Paris, 13055 Marseille'),
-(2,	'admin',	'$pbkdf2-sha256$29000$CCEEAEAIwdh77917L8UYAw$1oa9xfvcldCj4iItYc.t0zbPdBcmDzA6Vh.DF/7V9k0',	'admin@test.com',	1,	'9 avenue de l\'entreprise, 95800 Cergy, FRANCE');
+(2,	'admin',	'$pbkdf2-sha256$29000$3ntPqbWWMsb4H0PIeQ8BoA$C9pM9yD.xhnEn4VrEBIxY8MEyBPOL/hPc5PwIRMfgRY',	'admin@test.com',	1,	'9 avenue de l\'entreprise, 95800 Cergy, FRANCE');
 
 -- 2021-03-03 13:29:34

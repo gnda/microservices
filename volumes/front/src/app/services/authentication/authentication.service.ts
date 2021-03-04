@@ -1,10 +1,10 @@
 import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Router } from "@angular/router"
 import { Response } from '../../models/response';
-import { User } from '../../models/authentication/user';
 import { tokenGetter } from 'src/app/app-jwt.module';
 
 @Injectable({
@@ -15,9 +15,17 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(): Observable<Response>{
-    let response = this.http.get<Response>(this.baseUrl + "/login");
-    return response;
+  login(username: string, password: string): Observable<Response>{
+    return this.http.post<Response>(this.baseUrl + "/login", 
+      {username, password}
+    )
+    .pipe(
+      map((res) => {
+        localStorage.setItem("user", res.user);
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
+      })
+    );
   }
 
   logout(): Observable<Response>{

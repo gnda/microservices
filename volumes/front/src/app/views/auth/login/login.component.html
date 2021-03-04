@@ -13,21 +13,30 @@
           <hr class="mt-6 border-b-1 border-gray-400" />
         </div>
         <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form>
+          <div *ngIf="showAlert && error" class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
+            <span class="inline-block align-middle mr-8">
+              <div class="mr-5"><b class="capitalize">Error</b></div>
+              <div>{{ error.message }}</div>
+            </span>
+            <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-4 outline-none focus:outline-none" (click)="showAlert=false">
+              <div>×</div>
+            </button>
+          </div>        
+          <form [formGroup]="form" (keydown.enter)="login()">
             <div class="relative w-full mb-3">
               <label
                 class="block uppercase text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-password"
               >
-                Email
+                Username
               </label>
               <input
-                type="email"
+                type="text"
+                formControlName="username"
                 class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150"
-                placeholder="Email"
+                placeholder="Username"
               />
             </div>
-
             <div class="relative w-full mb-3">
               <label
                 class="block uppercase text-gray-700 text-xs font-bold mb-2"
@@ -37,6 +46,7 @@
               </label>
               <input
                 type="password"
+                formControlName="password"
                 class="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150"
                 placeholder="Password"
               />
@@ -58,7 +68,7 @@
               <button
                 class="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                 type="button"
-              >
+                (click)="login()" >
                 Sign In
               </button>
             </div>

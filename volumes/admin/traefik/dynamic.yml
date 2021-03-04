@@ -25,13 +25,6 @@ http:
 
     security:
       headers:
-        accessControlAllowMethods:
-          - GET
-          - OPTIONS
-          - PUT
-        #accessControlAllowOriginList = "*"
-        accessControlMaxAge: 100
-        addVaryHeader: true
         browserXssFilter: true
         contentTypeNosniff: true
         forceSTSHeader: true
