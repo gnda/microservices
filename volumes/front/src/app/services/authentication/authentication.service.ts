@@ -15,15 +15,15 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(username: string, password: string): Observable<Response>{
+  login(username: string, password: string): Observable<void>{
     return this.http.post<Response>(this.baseUrl + "/login", 
       {username, password}
     )
     .pipe(
       map((res) => {
-        localStorage.setItem("user", res.user);
-        localStorage.setItem("access_token", res.access_token);
-        localStorage.setItem("refresh_token", res.refresh_token);
+        localStorage.setItem("user", res["user"]);
+        localStorage.setItem("access_token", res["access_token"]);
+        localStorage.setItem("refresh_token", res["refresh_token"]);
       })
     );
   }
